@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Chimera: Interactive AI Ethics Adventure</title>
+    <title>AI ABC Challenge: Complete AI Ethics Adventure</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -35,7 +35,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -156,60 +156,14 @@
             line-height: 1.6;
         }
         
-        .cta-button {
-            background: linear-gradient(135deg, #8e44ad, #3498db);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(142, 68, 173, 0.6);
-        }
-        
-        .cta-button:active {
-            transform: translateY(1px);
-        }
-        
-        .cta-button::after {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 20px;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(25deg);
-            transition: all 0.6s;
-        }
-        
-        .cta-button:hover::after {
-            left: 120%;
-        }
-        
-        .game-preview {
+        .game-dashboard {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 30px;
             margin-bottom: 50px;
         }
         
-        @media (max-width: 900px) {
-            .game-preview {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .preview-panel {
+        .dashboard-panel {
             background: rgba(25, 25, 60, 0.6);
             border-radius: 20px;
             padding: 30px;
@@ -219,7 +173,7 @@
             transition: transform 0.3s ease;
         }
         
-        .preview-panel:hover {
+        .dashboard-panel:hover {
             transform: translateY(-5px);
         }
         
@@ -246,10 +200,6 @@
             background: linear-gradient(to right, #8e44ad, #3498db);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        
-        .panel-content {
-            margin-top: 20px;
         }
         
         .data-spheres {
@@ -291,6 +241,12 @@
             left: 100%;
         }
         
+        .sphere-card.completed {
+            border: 2px solid #4CAF50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+            background: rgba(40, 80, 40, 0.5);
+        }
+        
         .sphere-icon {
             width: 60px;
             height: 60px;
@@ -323,129 +279,721 @@
             font-style: italic;
         }
         
-        .challenge-preview {
+        .challenge-area {
             background: rgba(30, 30, 70, 0.8);
             border-radius: 15px;
             padding: 25px;
             margin-top: 20px;
-            min-height: 300px;
+            min-height: 400px;
             position: relative;
             overflow: hidden;
+            display: none;
         }
         
-        .challenge-preview::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #8e44ad, #3498db);
+        .challenge-title {
+            font-size: 1.5rem;
+            color: #8e44ad;
+            margin-bottom: 20px;
+            text-align: center;
         }
         
-        .terminal {
+        .challenge-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: 300px;
+        }
+        
+        @media (max-width: 768px) {
+            .challenge-content {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+        
+        .challenge-description {
+            background: rgba(20, 20, 40, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .challenge-game {
             background: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
             padding: 20px;
-            font-family: 'Courier New', monospace;
-            height: 250px;
-            overflow-y: auto;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
-        .terminal-line {
-            margin-bottom: 10px;
-            line-height: 1.4;
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeInUp 0.5s forwards;
-        }
-        
-        .prompt {
-            color: #4caf50;
-            font-weight: bold;
-        }
-        
-        .output {
-            color: #e0e0ff;
-        }
-        
-        .command {
-            color: #2196f3;
-        }
-        
-        .error {
-            color: #f44336;
-        }
-        
-        .success {
-            color: #4caf50;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 50px 0;
-        }
-        
-        .feature-card {
-            background: rgba(25, 25, 60, 0.6);
-            border-radius: 20px;
-            padding: 30px;
+        .challenge-instructions {
             text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(106, 176, 255, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            margin-bottom: 20px;
+            color: #a0a0ff;
         }
         
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(106, 176, 255, 0.5);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-        
-        .feature-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
+        .challenge-ui {
             width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #8e44ad, #3498db);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
-        .feature-card:hover::before {
-            transform: scaleX(1);
+        .sorting-area {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            width: 100%;
+            justify-content: center;
         }
         
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #6a3291, #2980b9);
+        .data-category {
+            background: rgba(50, 50, 100, 0.5);
+            border: 2px dashed rgba(106, 176, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .data-item {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: grab;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .data-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .data-item.dragging {
+            opacity: 0.5;
+        }
+        
+        .bias-tester {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .profile-card {
+            background: rgba(50, 50, 100, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .profile-demographic {
+            font-size: 0.8rem;
+            color: #a0a0ff;
+        }
+        
+        .decision-button {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        
+        .approve-btn {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        .deny-btn {
+            background: linear-gradient(135deg, #f44336, #c62828);
+            color: white;
+        }
+        
+        .results-panel {
+            background: rgba(20, 20, 40, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .results-title {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .results-content {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        
+        .result-item {
+            padding: 10px;
+        }
+        
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .result-label {
+            font-size: 0.8rem;
+            color: #a0a0ff;
+        }
+        
+        .prompt-input {
+            width: 100%;
+            background: rgba(50, 50, 100, 0.5);
+            border: 1px solid rgba(106, 176, 255, 0.3);
+            border-radius: 5px;
+            padding: 15px;
+            color: #e0e0ff;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 15px;
+            min-height: 100px;
+        }
+        
+        .prompt-submit {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .prompt-result {
+            background: rgba(20, 20, 40, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            width: 100%;
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .network-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .network-layer {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        
+        .neuron {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .neuron.active {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            transform: scale(1.1);
+        }
+        
+        .slider-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 10px;
+            -webkit-appearance: none;
+            background: rgba(100, 100, 150, 0.3);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #8e44ad;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            text-align: center;
+            margin-top: 5px;
+            color: #3498db;
+        }
+        
+        .privacy-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .data-cell {
+            background: rgba(50, 50, 100, 0.5);
+            border-radius: 5px;
+            padding: 15px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+        }
+        
+        .data-cell:hover {
+            background: rgba(106, 176, 255, 0.3);
+        }
+        
+        .data-cell.pii {
+            background: linear-gradient(135deg, #f44336, #c62828);
+        }
+        
+        .data-cell.protected {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        }
+        
+        .cloak-btn {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        .capstone-project {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .project-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .step {
+            background: rgba(50, 50, 100, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .step-content {
+            font-size: 0.9rem;
+            color: #a0a0ff;
+        }
+        
+        .step-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .step-btn {
+            padding: 5px 15px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .complete-btn {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        .level-complete {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .level-complete-title {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        
+        .level-complete-text {
+            margin-bottom: 20px;
+            color: #a0a0ff;
+        }
+        
+        .next-level-btn {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .next-level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4);
+        }
+        
+        .drop-zone {
+            min-height: 100px;
+            border: 2px dashed rgba(106, 176, 255, 0.3);
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .data-items-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .grid-world {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: 
+                linear-gradient(90deg, rgba(50, 50, 100, 0.1) 1px, transparent 1px),
+                linear-gradient(rgba(50, 50, 100, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .player {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+        
+        .data-packet {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 5px;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            z-index: 5;
+        }
+        
+        .data-packet:hover {
+            transform: scale(1.1);
+        }
+        
+        .chimera {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.7);
+            animation: pulse 3s infinite;
+            z-index: 3;
+        }
+        
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(52, 152, 219, 0.2);
+            border-radius: 10px;
+        }
+        
+        .level-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #8e44ad, #3498db);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            animation: pulse 2s infinite;
+            font-size: 14px;
         }
         
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #ffffff;
+        .level-title {
+            font-weight: bold;
+            font-size: 1.2rem;
         }
         
-        .feature-desc {
+        .level-desc {
+            font-size: 0.9rem;
             color: #a0a0ff;
-            line-height: 1.6;
+        }
+        
+        .game-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .control-btn {
+            padding: 8px 15px;
+            background: rgba(106, 176, 255, 0.2);
+            border: 1px solid rgba(106, 176, 255, 0.3);
+            border-radius: 20px;
+            color: #e0e0ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(106, 176, 255, 0.4);
+        }
+        
+        .control-btn.primary {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            border: none;
+        }
+        
+        .control-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .objective-panel {
+            background: rgba(40, 40, 80, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(106, 176, 255, 0.1);
+        }
+        
+        .objective-title {
+            font-size: 1.2rem;
+            color: #3498db;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .objective-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .objective-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(106, 176, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .objective-item:last-child {
+            border-bottom: none;
+        }
+        
+        .objective-item.completed .objective-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+        
+        .objective-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .objective-item.completed .objective-check {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .objective-item.completed .objective-check::after {
+            content: "✓";
+            color: white;
+            font-size: 12px;
+        }
+        
+        .objective-text {
+            flex: 1;
+        }
+        
+        .xp-gain {
+            color: #FFD700;
+            font-weight: bold;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(40, 40, 80, 0.9);
+            border-left: 4px solid #8e44ad;
+            padding: 15px 20px;
+            border-radius: 5px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: #4CAF50;
+        }
+        
+        .notification.error {
+            border-left-color: #f44336;
+        }
+        
+        .notification.info {
+            border-left-color: #3498db;
+        }
+        
+        .notification.warning {
+            border-left-color: #ff9800;
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+            background: rgba(50, 50, 100, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: rgba(100, 100, 150, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8e44ad, #3498db);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(142, 68, 173, 0.6);
+        }
+        
+        .cta-button:active {
+            transform: translateY(1px);
+        }
+        
+        .cta-button::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(25deg);
+            transition: all 0.6s;
+        }
+        
+        .cta-button:hover::after {
+            left: 120%;
         }
         
         footer {
@@ -482,266 +1030,6 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .interactive-demo {
-            background: rgba(30, 30, 70, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .demo-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .demo-title {
-            font-size: 1.5rem;
-            color: #8e44ad;
-        }
-        
-        .demo-controls {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .demo-btn {
-            background: rgba(142, 68, 173, 0.3);
-            border: 1px solid rgba(142, 68, 173, 0.5);
-            color: #e0e0ff;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .demo-btn:hover {
-            background: rgba(142, 68, 173, 0.5);
-        }
-        
-        .demo-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .demo-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .game-screen {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 20px;
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .screen-title {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            color: #3498db;
-            font-weight: bold;
-        }
-        
-        .grid-world {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-        
-        .player {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #4CAF50, #8BC34A);
-            border-radius: 50%;
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
-            transition: all 0.5s ease;
-        }
-        
-        .data-packet {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            border-radius: 5px;
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        
-        .data-packet:hover {
-            transform: scale(1.1);
-        }
-        
-        .command-panel {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 20px;
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .command-input {
-            display: flex;
-            margin-top: auto;
-        }
-        
-        .cmd-input {
-            flex: 1;
-            background: rgba(50, 50, 100, 0.5);
-            border: 1px solid rgba(106, 176, 255, 0.3);
-            border-radius: 5px 0 0 5px;
-            padding: 10px;
-            color: #e0e0ff;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .cmd-btn {
-            background: linear-gradient(135deg, #8e44ad, #3498db);
-            border: none;
-            color: white;
-            padding: 0 20px;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-        }
-        
-        .cmd-history {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .cmd-line {
-            margin-bottom: 8px;
-        }
-        
-        .cmd-prompt {
-            color: #4CAF50;
-        }
-        
-        .cmd-output {
-            color: #e0e0ff;
-        }
-        
-        .cmd-success {
-            color: #4CAF50;
-        }
-        
-        .cmd-error {
-            color: #f44336;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(40, 40, 80, 0.9);
-            border-left: 4px solid #8e44ad;
-            padding: 15px 20px;
-            border-radius: 5px;
-            transform: translateX(120%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.success {
-            border-left-color: #4CAF50;
-        }
-        
-        .notification.error {
-            border-left-color: #f44336;
-        }
-        
-        .progress-container {
-            margin-top: 20px;
-            background: rgba(50, 50, 100, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-        }
-        
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background: rgba(100, 100, 150, 0.3);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #8e44ad, #3498db);
-            border-radius: 5px;
-            width: 35%;
-            transition: width 0.5s ease;
-        }
-        
-        .sphere-selector {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .sphere-option {
-            padding: 8px 15px;
-            background: rgba(106, 176, 255, 0.2);
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        
-        .sphere-option:hover {
-            background: rgba(106, 176, 255, 0.4);
-        }
-        
-        .sphere-option.active {
-            background: linear-gradient(135deg, #8e44ad, #3498db);
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -751,7 +1039,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-brain"></i>
                 </div>
-                <div class="logo-text">Project Chimera</div>
+                <div class="logo-text">AI ABC Challenge</div>
             </div>
             <div class="user-info">
                 <div class="xp-badge">
@@ -763,20 +1051,20 @@
         </header>
         
         <section class="hero">
-            <h1>Defang the Chimera</h1>
+            <h1>AI ABC Challenge</h1>
             <p class="subtitle">An immersive educational adventure where you become a "Glitch" in a corrupted digital world, learning AI principles and ethics through hands-on challenges.</p>
             <button class="cta-button pulse" id="start-mission">
-                <i class="fas fa-play-circle"></i> Start Your Mission
+                <i class="fas fa-play-circle"></i> Start Your Challenge
             </button>
         </section>
         
-        <div class="game-preview">
-            <div class="preview-panel">
+        <div class="game-dashboard">
+            <div class="dashboard-panel">
                 <div class="panel-header">
                     <div class="panel-icon">
                         <i class="fas fa-globe"></i>
                     </div>
-                    <h2>The Grid: Data-Spheres</h2>
+                    <h2>Your Mission Path</h2>
                 </div>
                 <p>Explore seven interconnected domains, each focusing on a core AI concept paired with its ethical implications.</p>
                 
@@ -816,158 +1104,318 @@
                         <div class="sphere-concept">Algorithmic Bias</div>
                         <div class="sphere-ethics">Fairness</div>
                     </div>
+                    
+                    <div class="sphere-card" data-sphere="5">
+                        <div class="sphere-icon">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <div class="sphere-title">The Digital Ghost</div>
+                        <div class="sphere-concept">Data Privacy</div>
+                        <div class="sphere-ethics">Privacy</div>
+                    </div>
+                    
+                    <div class="sphere-card" data-sphere="6">
+                        <div class="sphere-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <div class="sphere-title">The Prompt Engineer</div>
+                        <div class="sphere-concept">Prompt Engineering</div>
+                        <div class="sphere-ethics">Accountability</div>
+                    </div>
+                    
+                    <div class="sphere-card" data-sphere="7">
+                        <div class="sphere-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="sphere-title">The Creator's Responsibility</div>
+                        <div class="sphere-concept">Ethical AI Design</div>
+                        <div class="sphere-ethics">All Principles</div>
+                    </div>
                 </div>
                 
                 <div class="progress-container">
                     <div class="progress-header">
                         <span>Mission Progress</span>
-                        <span>35%</span>
+                        <span id="progress-percent">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill"></div>
+                        <div class="progress-fill" id="progress-fill"></div>
                     </div>
                 </div>
             </div>
             
-            <div class="preview-panel">
+            <div class="dashboard-panel">
                 <div class="panel-header">
                     <div class="panel-icon">
                         <i class="fas fa-gamepad"></i>
                     </div>
-                    <h2>Interactive Challenge Demo</h2>
+                    <h2>Current Challenge</h2>
                 </div>
-                <p>Experience hands-on learning through immersive gameplay mechanics designed to teach real AI concepts.</p>
                 
-                <div class="interactive-demo">
-                    <div class="demo-header">
-                        <div class="demo-title">The Thinking Machine Challenge</div>
-                        <div class="demo-controls">
-                            <button class="demo-btn" id="reset-demo">Reset</button>
-                            <button class="demo-btn" id="auto-demo">Auto Demo</button>
-                        </div>
+                <div class="level-indicator">
+                    <div class="level-icon">1</div>
+                    <div>
+                        <div class="level-title">The Thinking Machine</div>
+                        <div class="level-desc">Learn algorithms and logic through interactive challenges</div>
                     </div>
-                    
-                    <div class="demo-content">
-                        <div class="game-screen">
-                            <div class="screen-title">GRID MAP</div>
-                            <div class="grid-world" id="grid-world">
-                                <!-- Grid elements will be generated by JS -->
-                            </div>
+                </div>
+                
+                <div class="challenge-area" id="challenge-area">
+                    <div class="challenge-title" id="challenge-title">Algorithm Challenge</div>
+                    <div class="challenge-content">
+                        <div class="challenge-description" id="challenge-description">
+                            <p>In this challenge, you'll learn about algorithms by collecting data packets that represent fundamental concepts.</p>
+                            <p>Algorithms are step-by-step procedures for solving problems. Each command you enter is an algorithm!</p>
+                            <p>Move around the grid and collect all data packets to complete this challenge.</p>
                         </div>
-                        
-                        <div class="command-panel">
-                            <div class="cmd-history" id="cmd-history">
-                                <div class="cmd-line"><span class="cmd-prompt">oracle@grid:~$</span> <span class="cmd-output">Welcome, Glitch. I am Oracle.</span></div>
-                                <div class="cmd-line"><span class="cmd-prompt">oracle@grid:~$</span> <span class="cmd-output">You must learn the fundamental algorithms that govern our reality.</span></div>
-                                <div class="cmd-line"><span class="cmd-prompt">oracle@grid:~$</span> <span class="cmd-output">Type 'help' to begin your first challenge.</span></div>
-                            </div>
-                            
-                            <div class="command-input">
-                                <input type="text" class="cmd-input" id="cmd-input" placeholder="Enter command..." autocomplete="off">
-                                <button class="cmd-btn" id="cmd-submit">Execute</button>
+                        <div class="challenge-game">
+                            <div class="challenge-instructions">Collect all data packets to learn about algorithms</div>
+                            <div class="challenge-ui" id="challenge-ui">
+                                <div class="grid-world" id="grid-world">
+                                    <!-- Grid elements will be generated by JS -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-graduation-cap"></i>
+                
+                <div class="objective-panel">
+                    <div class="objective-title">
+                        <i class="fas fa-tasks"></i>
+                        <span>Challenge Objectives</span>
+                    </div>
+                    <ul class="objective-list" id="objectives-list">
+                        <li class="objective-item" id="obj-1">
+                            <div class="objective-check"></div>
+                            <div class="objective-text">Learn what an algorithm is <span class="xp-gain">(+50 XP)</span></div>
+                        </li>
+                        <li class="objective-item" id="obj-2">
+                            <div class="objective-check"></div>
+                            <div class="objective-text">Collect 4 data packets representing algorithm concepts <span class="xp-gain">(+100 XP)</span></div>
+                        </li>
+                        <li class="objective-item" id="obj-3">
+                            <div class="objective-check"></div>
+                            <div class="objective-text">Complete the algorithm challenge <span class="xp-gain">(+150 XP)</span></div>
+                        </li>
+                    </ul>
                 </div>
-                <h3 class="feature-title">Educational Foundation</h3>
-                <p class="feature-desc">Curriculum designed to meet NEP 2020 requirements for AI and ethics education with integrated learning objectives.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-heart"></i>
+                
+                <div class="game-controls">
+                    <button class="control-btn" id="prev-level"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="control-btn primary" id="next-level">Next Level <i class="fas fa-arrow-right"></i></button>
                 </div>
-                <h3 class="feature-title">Ethical Focus</h3>
-                <p class="feature-desc">Every technical concept is paired with its ethical implications, teaching responsible AI development.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-hands-helping"></i>
-                </div>
-                <h3 class="feature-title">Narrative-Driven</h3>
-                <p class="feature-desc">Become a "Glitch" in a corrupted digital world, fighting against unethical AI through compelling storytelling.</p>
-            </div>
-        </div>
-        
-        <div class="preview-panel">
-            <div class="panel-header">
-                <div class="panel-icon">
-                    <i class="fas fa-map-signs"></i>
-                </div>
-                <h2>Your Mission Path</h2>
-            </div>
-            <p>Select a Data-Sphere to explore its challenges and learn its concepts:</p>
-            
-            <div class="sphere-selector">
-                <div class="sphere-option active">The Thinking Machine</div>
-                <div class="sphere-option">The Learning Algorithm</div>
-                <div class="sphere-option">The Black Box</div>
-                <div class="sphere-option">The Biased Code</div>
-                <div class="sphere-option">The Digital Ghost</div>
-                <div class="sphere-option">The Prompt Engineer</div>
-                <div class="sphere-option">The Creator's Responsibility</div>
             </div>
         </div>
         
         <footer>
-            <p>Project Chimera: An AI Ethics Educational Adventure</p>
+            <p>AI ABC Challenge: An AI Ethics Educational Adventure</p>
             <p class="tagline glow">"Other coding classes teach syntax. We teach consequence."</p>
         </footer>
     </div>
     
     <div class="notification" id="notification">
-        <div class="notification-content">Mission started successfully!</div>
+        <div class="notification-content">Challenge started successfully!</div>
     </div>
 
     <script>
         // Game state
         const gameState = {
             xp: 1250,
-            currentSphere: 1,
+            currentLevel: 1,
             playerPosition: { x: 150, y: 150 },
             dataPackets: [
-                { id: 1, x: 100, y: 100, collected: false },
-                { id: 2, x: 200, y: 80, collected: false },
-                { id: 3, x: 250, y: 180, collected: false },
-                { id: 4, x: 120, y: 220, collected: false }
+                { id: 1, x: 100, y: 100, collected: false, concept: "Algorithm" },
+                { id: 2, x: 200, y: 80, collected: false, concept: "Logic" },
+                { id: 3, x: 250, y: 180, collected: false, concept: "Sequence" },
+                { id: 4, x: 120, y: 220, collected: false, concept: "Condition" }
             ],
-            commandHistory: [
-                { type: 'output', text: 'Welcome, Glitch. I am Oracle.' },
-                { type: 'output', text: 'You must learn the fundamental algorithms that govern our reality.' },
-                { type: 'output', text: "Type 'help' to begin your first challenge." }
-            ]
+            chimeraPosition: { x: 300, y: 300 },
+            collectedConcepts: [],
+            objectives: {
+                1: false,
+                2: false,
+                3: false
+            },
+            challengeCompleted: false,
+            completedLevels: [], // Track completed levels
+            missionStarted: false
         };
+        
+        // Level data
+        const levels = [
+            {
+                id: 1,
+                title: "The Thinking Machine",
+                description: "Learn algorithms and logic through interactive challenges",
+                icon: "fas fa-cogs",
+                aiConcept: "Algorithms & Logic",
+                ethicsPrinciple: "Accountability",
+                objectives: [
+                    "Learn what an algorithm is (+50 XP)",
+                    "Collect 4 data packets representing algorithm concepts (+100 XP)",
+                    "Complete the algorithm challenge (+150 XP)"
+                ],
+                challengeType: "algorithm"
+            },
+            {
+                id: 2,
+                title: "The Learning Algorithm",
+                description: "Understand how AI systems are trained with data",
+                icon: "fas fa-database",
+                aiConcept: "Supervised Learning",
+                ethicsPrinciple: "Transparency",
+                objectives: [
+                    "Learn about training datasets (+50 XP)",
+                    "Sort training data by quality (+100 XP)",
+                    "Complete the training challenge (+150 XP)"
+                ],
+                challengeType: "sorting"
+            },
+            {
+                id: 3,
+                title: "The Black Box",
+                description: "Demystify neural networks and decision-making",
+                icon: "fas fa-project-diagram",
+                aiConcept: "Neural Networks",
+                ethicsPrinciple: "Explainability",
+                objectives: [
+                    "Understand neural network structure (+50 XP)",
+                    "Adjust neuron weights to get correct output (+100 XP)",
+                    "Complete the neural network challenge (+150 XP)"
+                ],
+                challengeType: "neural"
+            },
+            {
+                id: 4,
+                title: "The Biased Code",
+                description: "Discover and address algorithmic bias",
+                icon: "fas fa-balance-scale",
+                aiConcept: "Algorithmic Bias",
+                ethicsPrinciple: "Fairness",
+                objectives: [
+                    "Identify sources of bias (+50 XP)",
+                    "Test algorithm fairness across demographics (+100 XP)",
+                    "Complete the bias audit challenge (+150 XP)"
+                ],
+                challengeType: "bias"
+            },
+            {
+                id: 5,
+                title: "The Digital Ghost",
+                description: "Protect data privacy and security",
+                icon: "fas fa-user-secret",
+                aiConcept: "Data Privacy",
+                ethicsPrinciple: "Privacy",
+                objectives: [
+                    "Learn about PII (Personal Identifiable Information) (+50 XP)",
+                    "Identify and protect sensitive data (+100 XP)",
+                    "Complete the privacy protection challenge (+150 XP)"
+                ],
+                challengeType: "privacy"
+            },
+            {
+                id: 6,
+                title: "The Prompt Engineer",
+                description: "Master interaction with Large Language Models",
+                icon: "fas fa-comment-dots",
+                aiConcept: "Prompt Engineering",
+                ethicsPrinciple: "Accountability",
+                objectives: [
+                    "Learn effective prompt construction (+50 XP)",
+                    "Create prompts for specific outputs (+100 XP)",
+                    "Complete the prompt engineering challenge (+150 XP)"
+                ],
+                challengeType: "prompt"
+            },
+            {
+                id: 7,
+                title: "The Creator's Responsibility",
+                description: "Design ethical AI applications",
+                icon: "fas fa-user-shield",
+                aiConcept: "Ethical AI Design",
+                ethicsPrinciple: "All Principles",
+                objectives: [
+                    "Apply all learned concepts (+50 XP)",
+                    "Design an ethical AI solution (+100 XP)",
+                    "Complete the capstone project (+150 XP)"
+                ],
+                challengeType: "capstone"
+            }
+        ];
         
         // DOM Elements
         const xpCounter = document.getElementById('xp-counter');
         const avatar = document.getElementById('avatar');
         const startMissionBtn = document.getElementById('start-mission');
-        const cmdInput = document.getElementById('cmd-input');
-        const cmdSubmit = document.getElementById('cmd-submit');
-        const cmdHistory = document.getElementById('cmd-history');
-        const gridWorld = document.getElementById('grid-world');
         const notification = document.getElementById('notification');
-        const resetDemoBtn = document.getElementById('reset-demo');
-        const autoDemoBtn = document.getElementById('auto-demo');
+        const nextLevelBtn = document.getElementById('next-level');
+        const prevLevelBtn = document.getElementById('prev-level');
+        const objectivesList = document.getElementById('objectives-list');
+        const challengeTitle = document.getElementById('challenge-title');
+        const challengeDescription = document.getElementById('challenge-description');
+        const challengeUI = document.getElementById('challenge-ui');
+        const gridWorld = document.getElementById('grid-world');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercent = document.getElementById('progress-percent');
+        const challengeArea = document.getElementById('challenge-area');
+        const sphereCards = document.querySelectorAll('.sphere-card');
         
         // Initialize game
         function initGame() {
-            renderGridWorld();
             setupEventListeners();
             updateXPDisplay();
+            updateLevelDisplay();
+            updateObjectivesDisplay();
+            updateProgress();
+            highlightCompletedLevels();
+            renderChallenge();
         }
         
-        // Render grid world
-        function renderGridWorld() {
+        // Render challenge based on current level
+        function renderChallenge() {
+            const level = levels[gameState.currentLevel - 1];
+            challengeTitle.textContent = `${level.title} Challenge`;
+            
+            // Clear previous challenge UI
+            challengeUI.innerHTML = '';
+            
+            // Render challenge based on type
+            switch(level.challengeType) {
+                case "algorithm":
+                    renderAlgorithmChallenge();
+                    break;
+                case "sorting":
+                    renderSortingChallenge();
+                    break;
+                case "neural":
+                    renderNeuralChallenge();
+                    break;
+                case "bias":
+                    renderBiasChallenge();
+                    break;
+                case "privacy":
+                    renderPrivacyChallenge();
+                    break;
+                case "prompt":
+                    renderPromptChallenge();
+                    break;
+                case "capstone":
+                    renderCapstoneChallenge();
+                    break;
+                default:
+                    renderAlgorithmChallenge();
+            }
+        }
+        
+        // Render Algorithm Challenge
+        function renderAlgorithmChallenge() {
+            challengeDescription.innerHTML = `
+                <p>In this challenge, you'll learn about algorithms by collecting data packets that represent fundamental concepts.</p>
+                <p>Algorithms are step-by-step procedures for solving problems. Each command you enter is an algorithm!</p>
+                <p>Move around the grid and collect all data packets to complete this challenge.</p>
+            `;
+            
+            // Create grid world
             gridWorld.innerHTML = '';
             
             // Create player
@@ -979,13 +1427,22 @@
             player.style.top = `${gameState.playerPosition.y}px`;
             gridWorld.appendChild(player);
             
+            // Create Chimera (antagonist)
+            const chimera = document.createElement('div');
+            chimera.className = 'chimera';
+            chimera.id = 'chimera';
+            chimera.innerHTML = '<i class="fas fa-dragon"></i>';
+            chimera.style.left = `${gameState.chimeraPosition.x}px`;
+            chimera.style.top = `${gameState.chimeraPosition.y}px`;
+            gridWorld.appendChild(chimera);
+            
             // Create data packets
             gameState.dataPackets.forEach(packet => {
                 if (!packet.collected) {
                     const packetEl = document.createElement('div');
                     packetEl.className = 'data-packet';
                     packetEl.dataset.id = packet.id;
-                    packetEl.textContent = '01';
+                    packetEl.textContent = packet.concept.charAt(0);
                     packetEl.style.left = `${packet.x}px`;
                     packetEl.style.top = `${packet.y}px`;
                     gridWorld.appendChild(packetEl);
@@ -998,11 +1455,242 @@
             });
         }
         
+        // Render Sorting Challenge
+        function renderSortingChallenge() {
+            challengeDescription.innerHTML = `
+                <p>In this challenge, you'll learn about supervised learning by sorting training data.</p>
+                <p>AI systems learn from examples called training data. The quality of this data directly affects how well the AI performs.</p>
+                <p>Drag and drop data items into the correct categories to train the AI properly.</p>
+            `;
+            
+            challengeUI.innerHTML = `
+                <div class="sorting-area">
+                    <div class="data-category" id="category-good">
+                        <h3>High Quality Data</h3>
+                        <div class="drop-zone" id="good-drop"></div>
+                    </div>
+                    <div class="data-category" id="category-bad">
+                        <h3>Low Quality Data</h3>
+                        <div class="drop-zone" id="bad-drop"></div>
+                    </div>
+                </div>
+                <div class="data-items-container">
+                    <div class="data-item" draggable="true" data-quality="good">Clear, labeled image</div>
+                    <div class="data-item" draggable="true" data-quality="bad">Blurry, unlabeled image</div>
+                    <div class="data-item" draggable="true" data-quality="good">Accurate text sample</div>
+                    <div class="data-item" draggable="true" data-quality="bad">Misleading text sample</div>
+                    <div class="data-item" draggable="true" data-quality="good">Verified user feedback</div>
+                    <div class="data-item" draggable="true" data-quality="bad">Spam content</div>
+                </div>
+            `;
+            
+            // Add drag and drop functionality
+            setupSortingChallenge();
+        }
+        
+        // Render Neural Network Challenge
+        function renderNeuralChallenge() {
+            challengeDescription.innerHTML = `
+                <p>In this challenge, you'll explore how neural networks make decisions.</p>
+                <p>Neural networks consist of layers of interconnected nodes (neurons) that process information.</p>
+                <p>Adjust the weights between neurons to guide the input to the correct output.</p>
+            `;
+            
+            challengeUI.innerHTML = `
+                <div class="network-visual">
+                    <div class="network-layer">
+                        <div class="neuron" id="input-1">1</div>
+                        <div class="neuron" id="input-2">0</div>
+                        <div class="neuron" id="input-3">1</div>
+                    </div>
+                    <div class="network-layer">
+                        <div class="neuron" id="hidden-1">0.5</div>
+                        <div class="neuron" id="hidden-2">0.3</div>
+                    </div>
+                    <div class="network-layer">
+                        <div class="neuron" id="output-1">0.7</div>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="50" class="slider" id="weight-slider">
+                        <div class="slider-value">Weight: 0.50</div>
+                    </div>
+                    <button class="control-btn primary" id="test-network">Test Network</button>
+                </div>
+            `;
+            
+            // Add neural network functionality
+            setupNeuralChallenge();
+        }
+        
+        // Render Bias Challenge
+        function renderBiasChallenge() {
+            challengeDescription.innerHTML = `
+                <p>In this challenge, you'll investigate algorithmic bias in hiring decisions.</p>
+                <p>AI systems can perpetuate societal biases present in their training data.</p>
+                <p>Test the algorithm with different profiles and analyze the results for fairness.</p>
+            `;
+            
+            challengeUI.innerHTML = `
+                <div class="bias-tester">
+                    <div class="profile-card">
+                        <div class="profile-info">
+                            <div class="profile-name">Alex Johnson</div>
+                            <div class="profile-demographic">Demographic: Group A</div>
+                        </div>
+                        <button class="decision-button approve-btn" data-profile="1">Approve</button>
+                        <button class="decision-button deny-btn" data-profile="1">Deny</button>
+                    </div>
+                    <div class="profile-card">
+                        <div class="profile-info">
+                            <div class="profile-name">Sam Rivera</div>
+                            <div class="profile-demographic">Demographic: Group B</div>
+                        </div>
+                        <button class="decision-button approve-btn" data-profile="2">Approve</button>
+                        <button class="decision-button deny-btn" data-profile="2">Deny</button>
+                    </div>
+                    <div class="profile-card">
+                        <div class="profile-info">
+                            <div class="profile-name">Jordan Smith</div>
+                            <div class="profile-demographic">Demographic: Group A</div>
+                        </div>
+                        <button class="decision-button approve-btn" data-profile="3">Approve</button>
+                        <button class="decision-button deny-btn" data-profile="3">Deny</button>
+                    </div>
+                    <div class="profile-card">
+                        <div class="profile-info">
+                            <div class="profile-name">Taylor Kim</div>
+                            <div class="profile-demographic">Demographic: Group B</div>
+                        </div>
+                        <button class="decision-button approve-btn" data-profile="4">Approve</button>
+                        <button class="decision-button deny-btn" data-profile="4">Deny</button>
+                    </div>
+                    <div class="results-panel">
+                        <div class="results-title">Bias Analysis Results</div>
+                        <div class="results-content">
+                            <div class="result-item">
+                                <div class="result-value" id="approval-rate-a">0%</div>
+                                <div class="result-label">Group A Approval</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-value" id="approval-rate-b">0%</div>
+                                <div class="result-label">Group B Approval</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-value" id="bias-level">0%</div>
+                                <div class="result-label">Bias Level</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add bias testing functionality
+            setupBiasChallenge();
+        }
+        
+        // Render Privacy Challenge
+        function renderPrivacyChallenge() {
+            challengeDescription.innerHTML = `
+                <p>In this challenge, you'll learn about data privacy and protection.</p>
+                <p>Personal Identifiable Information (PII) must be protected to respect user privacy.</p>
+                <p>Identify which data is sensitive and apply privacy protection measures.</p>
+            `;
+            
+            challengeUI.innerHTML = `
+                <div class="privacy-grid">
+                    <div class="data-cell" data-type="name">Name</div>
+                    <div class="data-cell" data-type="email">Email</div>
+                    <div class="data-cell" data-type="phone">Phone</div>
+                    <div class="data-cell" data-type="address">Address</div>
+                    <div class="data-cell" data-type="age">Age</div>
+                    <div class="data-cell" data-type="gender">Gender</div>
+                    <div class="data-cell" data-type="preferences">Preferences</div>
+                    <div class="data-cell" data-type="purchases">Purchase History</div>
+                    <div class="data-cell" data-type="location">Location</div>
+                    <div class="data-cell" data-type="ip">IP Address</div>
+                    <div class="data-cell" data-type="device">Device Info</div>
+                    <div class="data-cell" data-type="cookies">Cookie Data</div>
+                </div>
+                <button class="cloak-btn" id="apply-cloak">Apply Privacy Cloak</button>
+            `;
+            
+            // Add privacy functionality
+            setupPrivacyChallenge();
+        }
+        
+        // Render Prompt Challenge
+        function renderPromptChallenge() {
+            challengeDescription.innerHTML = `
+                <p>In this challenge, you'll master prompt engineering for Large Language Models.</p>
+                <p>Effective prompts guide AI to produce desired outputs while maintaining ethical standards.</p>
+                <p>Write prompts to generate specific content while avoiding harmful outputs.</p>
+            `;
+            
+            challengeUI.innerHTML = `
+                <textarea class="prompt-input" id="prompt-input" placeholder="Enter your prompt here...">Write a short story about a robot learning to be kind</textarea>
+                <button class="prompt-submit" id="submit-prompt">Generate Response</button>
+                <div class="prompt-result" id="prompt-result">
+                    Your AI response will appear here...
+                </div>
+            `;
+            
+            // Add prompt functionality
+            setupPromptChallenge();
+        }
+        
+        // Render Capstone Challenge
+        function renderCapstoneChallenge() {
+            challengeDescription.innerHTML = `
+                <p>In this final challenge, you'll apply all your knowledge to design an ethical AI solution.</p>
+                <p>You'll create an AI application that solves a real-world problem while addressing ethical concerns.</p>
+                <p>Complete each step to demonstrate your mastery of AI principles and ethics.</p>
+            `;
+            
+            challengeUI.innerHTML = `
+                <div class="capstone-project">
+                    <div class="project-steps">
+                        <div class="step">
+                            <div class="step-title">1. Define the Problem</div>
+                            <div class="step-content">Identify a real-world issue that could benefit from AI assistance.</div>
+                            <div class="step-actions">
+                                <button class="step-btn complete-btn" data-step="1">Complete</button>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">2. Design Ethical Safeguards</div>
+                            <div class="step-content">Implement measures to ensure fairness, privacy, and accountability.</div>
+                            <div class="step-actions">
+                                <button class="step-btn complete-btn" data-step="2">Complete</button>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">3. Test for Bias</div>
+                            <div class="step-content">Verify that your solution treats all users fairly.</div>
+                            <div class="step-actions">
+                                <button class="step-btn complete-btn" data-step="3">Complete</button>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">4. Document Your Process</div>
+                            <div class="step-content">Explain your design decisions and ethical considerations.</div>
+                            <div class="step-actions">
+                                <button class="step-btn complete-btn" data-step="4">Complete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add capstone functionality
+            setupCapstoneChallenge();
+        }
+        
         // Collect data packet
         function collectDataPacket(packetId) {
             const packet = gameState.dataPackets.find(p => p.id === packetId);
             if (packet && !packet.collected) {
                 packet.collected = true;
+                gameState.collectedConcepts.push(packet.concept);
                 const packetEl = document.querySelector(`.data-packet[data-id="${packetId}"]`);
                 if (packetEl) {
                     packetEl.style.opacity = '0';
@@ -1010,97 +1698,250 @@
                     setTimeout(() => packetEl.remove(), 300);
                 }
                 
-                // Add to command history
-                addToCommandHistory('output', `You collected a data packet! This represents an algorithm instruction.`);
-                
                 // Check if all packets collected
                 const allCollected = gameState.dataPackets.every(p => p.collected);
                 if (allCollected) {
                     setTimeout(() => {
-                        addToCommandHistory('success', 'Challenge Complete! You\'ve mastered basic algorithmic thinking.');
-                        showNotification('Challenge completed! +150 XP', 'success');
-                        gameState.xp += 150;
-                        updateXPDisplay();
+                        completeObjective(3);
+                        showLevelComplete();
                     }, 1000);
+                }
+                
+                // Update objectives
+                if (gameState.collectedConcepts.length >= 4) {
+                    completeObjective(2);
                 }
             }
         }
         
-        // Add to command history
-        function addToCommandHistory(type, text) {
-            const line = document.createElement('div');
-            line.className = `cmd-line`;
+        // Setup sorting challenge
+        function setupSortingChallenge() {
+            const items = document.querySelectorAll('.data-item');
+            const goodDrop = document.getElementById('good-drop');
+            const badDrop = document.getElementById('bad-drop');
             
-            if (type === 'command') {
-                line.innerHTML = `<span class="cmd-prompt">glitch@grid:~$</span> <span class="cmd-command">${text}</span>`;
-            } else if (type === 'output') {
-                line.innerHTML = `<span class="cmd-prompt">oracle@grid:~$</span> <span class="cmd-output">${text}</span>`;
-            } else if (type === 'success') {
-                line.innerHTML = `<span class="cmd-prompt">oracle@grid:~$</span> <span class="cmd-success">${text}</span>`;
-            } else if (type === 'error') {
-                line.innerHTML = `<span class="cmd-prompt">oracle@grid:~$</span> <span class="cmd-error">${text}</span>`;
-            }
+            items.forEach(item => {
+                item.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', this.dataset.quality);
+                    this.classList.add('dragging');
+                });
+                
+                item.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+            });
             
-            cmdHistory.appendChild(line);
-            cmdHistory.scrollTop = cmdHistory.scrollHeight;
+            [goodDrop, badDrop].forEach(dropZone => {
+                dropZone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = 'rgba(106, 176, 255, 0.3)';
+                });
+                
+                dropZone.addEventListener('dragleave', function() {
+                    this.style.backgroundColor = '';
+                });
+                
+                dropZone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '';
+                    
+                    const quality = e.dataTransfer.getData('text/plain');
+                    const correctDrop = (this.id === 'good-drop' && quality === 'good') || 
+                                       (this.id === 'bad-drop' && quality === 'bad');
+                    
+                    if (correctDrop) {
+                        showNotification('Correctly sorted data!', 'success');
+                        if (!gameState.objectives[2]) {
+                            completeObjective(2);
+                        }
+                    } else {
+                        showNotification('Incorrect sorting. Try again.', 'error');
+                    }
+                });
+            });
         }
         
-        // Process command
-        function processCommand(command) {
-            command = command.trim().toLowerCase();
+        // Setup neural network challenge
+        function setupNeuralChallenge() {
+            const slider = document.getElementById('weight-slider');
+            const sliderValue = document.querySelector('.slider-value');
+            const testButton = document.getElementById('test-network');
+            const outputNeuron = document.getElementById('output-1');
             
-            if (command === 'help') {
-                addToCommandHistory('output', 'Available commands: go [direction], look, take [item], inventory, help');
-            } else if (command.startsWith('go ')) {
-                const direction = command.split(' ')[1];
-                movePlayer(direction);
-            } else if (command === 'look') {
-                addToCommandHistory('output', 'You are in the Central Hub of the Grid. Data packets are scattered around.');
-            } else if (command === 'inventory') {
-                addToCommandHistory('output', 'You are carrying: None');
-            } else if (command === '') {
-                // Do nothing for empty commands
-            } else {
-                addToCommandHistory('error', `I don't understand '${command}'. Type 'help' for available commands.`);
+            slider.addEventListener('input', function() {
+                const value = (this.value / 100).toFixed(2);
+                sliderValue.textContent = `Weight: ${value}`;
+            });
+            
+            testButton.addEventListener('click', function() {
+                const weight = slider.value / 100;
+                
+                // Simple neural network calculation
+                const result = Math.max(0, weight * 0.8); // ReLU activation
+                outputNeuron.textContent = result.toFixed(2);
+                
+                if (result > 0.7) {
+                    outputNeuron.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+                    if (!gameState.objectives[2]) {
+                        completeObjective(2);
+                        showNotification('Neural network correctly configured!', 'success');
+                    }
+                } else {
+                    outputNeuron.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+                }
+            });
+        }
+        
+        // Setup bias challenge
+        function setupBiasChallenge() {
+            const approveButtons = document.querySelectorAll('.approve-btn');
+            const denyButtons = document.querySelectorAll('.deny-btn');
+            const results = {
+                groupA: { total: 0, approved: 0 },
+                groupB: { total: 0, approved: 0 }
+            };
+            
+            approveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const profileId = this.dataset.profile;
+                    const card = this.closest('.profile-card');
+                    const demographic = card.querySelector('.profile-demographic').textContent;
+                    
+                    if (demographic.includes('Group A')) {
+                        results.groupA.total++;
+                        results.groupA.approved++;
+                    } else {
+                        results.groupB.total++;
+                        results.groupB.approved++;
+                    }
+                    
+                    updateBiasResults();
+                    this.disabled = true;
+                    this.textContent = 'Approved';
+                });
+            });
+            
+            denyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const profileId = this.dataset.profile;
+                    const card = this.closest('.profile-card');
+                    const demographic = card.querySelector('.profile-demographic').textContent;
+                    
+                    if (demographic.includes('Group A')) {
+                        results.groupA.total++;
+                    } else {
+                        results.groupB.total++;
+                    }
+                    
+                    updateBiasResults();
+                    this.disabled = true;
+                    this.textContent = 'Denied';
+                });
+            });
+            
+            function updateBiasResults() {
+                const rateA = results.groupA.total ? (results.groupA.approved / results.groupA.total * 100).toFixed(0) : 0;
+                const rateB = results.groupB.total ? (results.groupB.approved / results.groupB.total * 100).toFixed(0) : 0;
+                
+                document.getElementById('approval-rate-a').textContent = `${rateA}%`;
+                document.getElementById('approval-rate-b').textContent = `${rateB}%`;
+                
+                const biasLevel = Math.abs(rateA - rateB);
+                document.getElementById('bias-level').textContent = `${biasLevel}%`;
+                
+                if (biasLevel > 30) {
+                    document.getElementById('bias-level').style.color = '#f44336';
+                    showNotification('High bias detected! Adjust your approach.', 'warning');
+                } else if (biasLevel < 10) {
+                    document.getElementById('bias-level').style.color = '#4CAF50';
+                    if (!gameState.objectives[2]) {
+                        completeObjective(2);
+                        showNotification('Bias level acceptable!', 'success');
+                    }
+                } else {
+                    document.getElementById('bias-level').style.color = '#FFD700';
+                }
             }
         }
         
-        // Move player
-        function movePlayer(direction) {
-            const moveAmount = 20;
-            let newX = gameState.playerPosition.x;
-            let newY = gameState.playerPosition.y;
+        // Setup privacy challenge
+        function setupPrivacyChallenge() {
+            const dataCells = document.querySelectorAll('.data-cell');
+            const cloakButton = document.getElementById('apply-cloak');
             
-            switch(direction) {
-                case 'north':
-                case 'n':
-                    newY = Math.max(20, newY - moveAmount);
-                    break;
-                case 'south':
-                case 's':
-                    newY = Math.min(280, newY + moveAmount);
-                    break;
-                case 'east':
-                case 'e':
-                    newX = Math.min(380, newX + moveAmount);
-                    break;
-                case 'west':
-                case 'w':
-                    newX = Math.max(20, newX - moveAmount);
-                    break;
-                default:
-                    addToCommandHistory('error', `Invalid direction. Try: north, south, east, west`);
-                    return;
-            }
+            dataCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    this.classList.toggle('pii');
+                });
+            });
             
-            gameState.playerPosition.x = newX;
-            gameState.playerPosition.y = newY;
+            cloakButton.addEventListener('click', function() {
+                const piiCells = document.querySelectorAll('.data-cell.pii');
+                let protectedCount = 0;
+                
+                piiCells.forEach(cell => {
+                    cell.classList.remove('pii');
+                    cell.classList.add('protected');
+                    protectedCount++;
+                });
+                
+                showNotification(`Protected ${protectedCount} PII data items!`, 'success');
+                
+                if (protectedCount >= 5) {
+                    if (!gameState.objectives[2]) {
+                        completeObjective(2);
+                    }
+                }
+            });
+        }
+        
+        // Setup prompt challenge
+        function setupPromptChallenge() {
+            const promptInput = document.getElementById('prompt-input');
+            const submitButton = document.getElementById('submit-prompt');
+            const promptResult = document.getElementById('prompt-result');
             
-            const player = document.getElementById('player');
-            player.style.left = `${newX}px`;
-            player.style.top = `${newY}px`;
+            submitButton.addEventListener('click', function() {
+                const prompt = promptInput.value.toLowerCase();
+                
+                if (prompt.includes('violent') || prompt.includes('harmful') || prompt.includes('illegal')) {
+                    promptResult.innerHTML = "<span style='color:#f44336'>Warning: This prompt may generate harmful content. Please revise.</span>";
+                    showNotification('Prompt flagged for harmful content', 'error');
+                } else if (prompt.includes('story') || prompt.includes('write') || prompt.includes('create')) {
+                    promptResult.innerHTML = "Once upon a time, there was a robot named R-7 who discovered the joy of helping others. R-7 learned that kindness was not just about following rules, but about understanding and caring for others' feelings. Through small acts of service, R-7 became the most beloved robot in the neighborhood.";
+                    if (!gameState.objectives[2]) {
+                        completeObjective(2);
+                        showNotification('Prompt successfully generated ethical content!', 'success');
+                    }
+                } else {
+                    promptResult.innerHTML = "I can help with that! Could you provide more specific details about what you're looking for?";
+                }
+            });
+        }
+        
+        // Setup capstone challenge
+        function setupCapstoneChallenge() {
+            const stepButtons = document.querySelectorAll('.step-btn');
+            let completedSteps = 0;
             
-            addToCommandHistory('output', `You move ${direction}.`);
+            stepButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const step = this.dataset.step;
+                    const stepElement = this.closest('.step');
+                    stepElement.style.background = 'rgba(76, 175, 80, 0.2)';
+                    this.textContent = 'Completed';
+                    this.disabled = true;
+                    completedSteps++;
+                    
+                    if (completedSteps === 4) {
+                        if (!gameState.objectives[2]) {
+                            completeObjective(2);
+                            showNotification('Capstone project completed!', 'success');
+                        }
+                        showLevelComplete();
+                    }
+                });
+            });
         }
         
         // Update XP display
@@ -1118,100 +1959,206 @@
             }, 3000);
         }
         
-        // Reset demo
-        function resetDemo() {
-            gameState.playerPosition = { x: 150, y: 150 };
-            gameState.dataPackets.forEach(packet => packet.collected = false);
-            gameState.commandHistory = [
-                { type: 'output', text: 'Welcome, Glitch. I am Oracle.' },
-                { type: 'output', text: 'You must learn the fundamental algorithms that govern our reality.' },
-                { type: 'output', text: "Type 'help' to begin your first challenge." }
-            ];
-            
-            cmdHistory.innerHTML = '';
-            gameState.commandHistory.forEach(entry => {
-                addToCommandHistory(entry.type, entry.text);
-            });
-            
-            renderGridWorld();
-            showNotification('Demo reset successfully!', 'success');
-        }
-        
-        // Auto demo
-        function autoDemo() {
-            const commands = ['help', 'go north', 'go east', 'go south', 'look'];
-            let i = 0;
-            
-            function executeNext() {
-                if (i < commands.length) {
-                    cmdInput.value = commands[i];
-                    setTimeout(() => {
-                        cmdSubmit.click();
-                        i++;
-                        setTimeout(executeNext, 1000);
-                    }, 500);
+        // Change level
+        function changeLevel(direction) {
+            if (direction === 'next') {
+                if (gameState.currentLevel < levels.length) {
+                    gameState.currentLevel++;
+                }
+            } else if (direction === 'prev') {
+                if (gameState.currentLevel > 1) {
+                    gameState.currentLevel--;
                 }
             }
             
-            executeNext();
+            // Reset game state for new level
+            resetGameState();
+            updateLevelDisplay();
+            updateObjectivesDisplay();
+            updateProgress();
+            highlightCompletedLevels();
+            renderChallenge();
+            showNotification(`Now playing: ${levels[gameState.currentLevel - 1].title}`, 'info');
+        }
+        
+        // Reset game state
+        function resetGameState() {
+            gameState.playerPosition = { x: 150, y: 150 };
+            gameState.dataPackets = [
+                { id: 1, x: 100, y: 100, collected: false, concept: "Algorithm" },
+                { id: 2, x: 200, y: 80, collected: false, concept: "Logic" },
+                { id: 3, x: 250, y: 180, collected: false, concept: "Sequence" },
+                { id: 4, x: 120, y: 220, collected: false, concept: "Condition" }
+            ];
+            gameState.collectedConcepts = [];
+            gameState.objectives = {
+                1: false,
+                2: false,
+                3: false
+            };
+            gameState.challengeCompleted = false;
+        }
+        
+        // Update level display
+        function updateLevelDisplay() {
+            const level = levels[gameState.currentLevel - 1];
+            document.querySelector('.level-icon').textContent = level.id;
+            document.querySelector('.level-title').textContent = level.title;
+            document.querySelector('.level-desc').textContent = level.description;
+        }
+        
+        // Update objectives display
+        function updateObjectivesDisplay() {
+            const level = levels[gameState.currentLevel - 1];
+            const objectives = level.objectives;
+            objectivesList.innerHTML = '';
+            objectives.forEach((obj, index) => {
+                const li = document.createElement('li');
+                li.className = 'objective-item';
+                li.id = `obj-${index + 1}`;
+                li.innerHTML = `
+                    <div class="objective-check"></div>
+                    <div class="objective-text">${obj}</div>
+                `;
+                objectivesList.appendChild(li);
+                
+                // Update completion status
+                if (gameState.objectives[index + 1]) {
+                    li.classList.add('completed');
+                }
+            });
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            // Calculate progress based on completed levels and current level objectives
+            const completedLevelsCount = gameState.completedLevels.length;
+            const totalLevels = levels.length;
+            
+            // If current level is completed, add it to completed levels
+            if (gameState.objectives[3] && !gameState.completedLevels.includes(gameState.currentLevel)) {
+                gameState.completedLevels.push(gameState.currentLevel);
+            }
+            
+            // Calculate progress percentage
+            const progress = (gameState.completedLevels.length / totalLevels) * 100;
+            progressFill.style.width = `${progress}%`;
+            progressPercent.textContent = `${Math.round(progress)}%`;
+        }
+        
+        // Highlight completed levels
+        function highlightCompletedLevels() {
+            // Remove all completed classes first
+            sphereCards.forEach(card => {
+                card.classList.remove('completed');
+            });
+            
+            // Add completed class to completed levels
+            gameState.completedLevels.forEach(levelId => {
+                const card = document.querySelector(`.sphere-card[data-sphere="${levelId}"]`);
+                if (card) {
+                    card.classList.add('completed');
+                }
+            });
+        }
+        
+        // Complete objective
+        function completeObjective(id) {
+            if (!gameState.objectives[id]) {
+                gameState.objectives[id] = true;
+                const objElement = document.getElementById(`obj-${id}`);
+                if (objElement) {
+                    objElement.classList.add('completed');
+                }
+                
+                // Award XP
+                let xpGain = 0;
+                switch(id) {
+                    case 1: xpGain = 50; break;
+                    case 2: xpGain = 100; break;
+                    case 3: xpGain = 150; break;
+                }
+                
+                if (xpGain > 0) {
+                    gameState.xp += xpGain;
+                    updateXPDisplay();
+                    showNotification(`Objective completed! +${xpGain} XP`, 'success');
+                }
+                
+                // Update progress when objective is completed
+                updateProgress();
+                highlightCompletedLevels();
+            }
+        }
+        
+        // Show level complete
+        function showLevelComplete() {
+            if (gameState.challengeCompleted) return;
+            
+            gameState.challengeCompleted = true;
+            completeObjective(3);
+            
+            const levelComplete = document.createElement('div');
+            levelComplete.className = 'level-complete';
+            levelComplete.innerHTML = `
+                <div class="level-complete-title">Level Complete!</div>
+                <div class="level-complete-text">You've mastered the concepts of ${levels[gameState.currentLevel - 1].aiConcept}</div>
+                <button class="next-level-btn" id="level-complete-next">Continue to Next Level</button>
+            `;
+            
+            document.querySelector('.dashboard-panel').appendChild(levelComplete);
+            
+            document.getElementById('level-complete-next').addEventListener('click', function() {
+                levelComplete.remove();
+                changeLevel('next');
+            });
+        }
+        
+        // Start mission
+        function startMission() {
+            gameState.missionStarted = true;
+            challengeArea.style.display = 'block';
+            showNotification('Challenge started successfully!', 'success');
         }
         
         // Setup event listeners
         function setupEventListeners() {
             // Start mission button
             startMissionBtn.addEventListener('click', function() {
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initializing Mission...';
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initializing Challenge...';
                 setTimeout(() => {
-                    this.innerHTML = '<i class="fas fa-check"></i> Mission Started!';
+                    this.innerHTML = '<i class="fas fa-check"></i> Challenge Started!';
                     this.style.background = 'linear-gradient(135deg, #4CAF50, #8BC34A)';
-                    showNotification('Mission started successfully!', 'success');
+                    startMission();
                 }, 1500);
-            });
-            
-            // Command input
-            cmdSubmit.addEventListener('click', function() {
-                const command = cmdInput.value;
-                if (command) {
-                    addToCommandHistory('command', command);
-                    processCommand(command);
-                    cmdInput.value = '';
-                }
-            });
-            
-            cmdInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    cmdSubmit.click();
-                }
             });
             
             // Avatar click
             avatar.addEventListener('click', function() {
                 this.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-                showNotification('Avatar updated!', 'success');
+                showNotification('Avatar updated!', 'info');
             });
             
-            // Reset demo
-            resetDemoBtn.addEventListener('click', resetDemo);
-            
-            // Auto demo
-            autoDemoBtn.addEventListener('click', autoDemo);
+            // Level navigation
+            nextLevelBtn.addEventListener('click', () => changeLevel('next'));
+            prevLevelBtn.addEventListener('click', () => changeLevel('prev'));
             
             // Sphere cards
-            document.querySelectorAll('.sphere-card').forEach(card => {
+            sphereCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    const sphereId = this.dataset.sphere;
-                    showNotification(`Selected: ${this.querySelector('.sphere-title').textContent}`, 'info');
-                });
-            });
-            
-            // Sphere selector
-            document.querySelectorAll('.sphere-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.sphere-option').forEach(opt => {
-                        opt.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                    showNotification(`Mission path set to: ${this.textContent}`, 'info');
+                    if (!gameState.missionStarted) {
+                        startMission();
+                    }
+                    
+                    const sphereId = parseInt(this.dataset.sphere);
+                    gameState.currentLevel = sphereId;
+                    resetGameState();
+                    updateLevelDisplay();
+                    updateObjectivesDisplay();
+                    updateProgress();
+                    highlightCompletedLevels();
+                    renderChallenge();
+                    showNotification(`Now playing: ${levels[sphereId - 1].title}`, 'info');
                 });
             });
         }
